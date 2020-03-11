@@ -1,4 +1,4 @@
-package com.automappinghomework.domain.entitties;
+package com.automappinghomework.domain.entities;
 
 import javax.persistence.*;
 
