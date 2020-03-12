@@ -1,7 +1,7 @@
 package com.automappinghomework.domain.entities;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -10,7 +10,7 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String fullName;
-    private List<Game> games;
+    private Set<Game> games;
     private Role role;
 
     public User() {
@@ -44,11 +44,11 @@ public class User extends BaseEntity {
     }
 
     @ManyToMany
-    public List<Game> getGames() {
+    public Set<Game> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(Set<Game> games) {
         this.games = games;
     }
 

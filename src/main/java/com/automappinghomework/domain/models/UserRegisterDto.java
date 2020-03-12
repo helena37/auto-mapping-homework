@@ -1,6 +1,9 @@
 package com.automappinghomework.domain.models;
 
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserRegisterDto {
     private String email;
     private String password;
@@ -15,6 +18,7 @@ public class UserRegisterDto {
         this.fullName = fullName;
     }
 
+    @Pattern(regexp = ".+@.+\\..+", message = "!!!Email is not valid!!!")
     public String getEmail() {
         return email;
     }
@@ -23,6 +27,8 @@ public class UserRegisterDto {
         this.email = email;
     }
 
+    @Size(min = 6, max = 6, message = "Password length must be 6 symbols!")
+    @Pattern(regexp = "[A-Z]+[a-z]+[0-9]+", message = "Password must be 6 symbols!")
     public String getPassword() {
         return password;
     }
