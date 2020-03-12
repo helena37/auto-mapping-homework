@@ -27,8 +27,8 @@ public class UserRegisterDto {
         this.email = email;
     }
 
-    @Size(min = 6, max = 6, message = "Password length must be 6 symbols!")
-    @Pattern(regexp = "[A-Z]+[a-z]+[0-9]+", message = "Password must be 6 symbols!")
+    @Size(min = 6, message = "Password length must be at least 6 symbols!")
+    @Pattern(regexp = "[A-Z]+[a-z]+[0-9]+", message = "Password must have at least 1 uppercase later and at least 1 digit!")
     public String getPassword() {
         return password;
     }
