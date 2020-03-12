@@ -1,6 +1,7 @@
 package com.automappinghomework.domain.models;
 
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -37,6 +38,7 @@ public class UserRegisterDto {
         this.password = password;
     }
 
+    @NotNull(message = "Full name can't be empty!!!")
     public String getFullName() {
         return fullName;
     }
