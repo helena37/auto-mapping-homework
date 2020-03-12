@@ -1,5 +1,6 @@
 package com.automappinghomework.services;
 
+import com.automappinghomework.domain.entities.Role;
 import com.automappinghomework.domain.entities.User;
 import com.automappinghomework.domain.models.UserRegisterDto;
 import com.automappinghomework.repositories.UserRepository;
@@ -21,5 +22,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(UserRegisterDto userRegisterDto) {
         User user = this.modelMapper.map(userRegisterDto, User.class);
+
+        user.setRole(this.userRepository.count() == 0 ? Role.ADMIN : Role.USER);
+        this.userRepository.saveAndFlush(user);
     }
 }
