@@ -1,5 +1,6 @@
 package com.automappinghomework.controllers;
 
+import com.automappinghomework.domain.models.UserLoginDto;
 import com.automappinghomework.domain.models.UserRegisterDto;
 import com.automappinghomework.services.UserService;
 import com.automappinghomework.utils.ValidationUtil;
@@ -26,6 +27,7 @@ public class AppController implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         while (true) {
+            System.out.println("Please, enter command: ");
             String[] input = this.reader.readLine().split("\\|");
 
             switch (input[0]) {
@@ -39,6 +41,11 @@ public class AppController implements CommandLineRunner {
                     if (this.validationUtil.isValid(userRegisterDto)) {
                         this.userService
                                 .registerUser(userRegisterDto);
+                        System.out.println(
+                                String.format(
+                                "%s was registered",
+                                        input[4]
+                        ));
                     } else {
                         this.validationUtil
                                 .getViolations(userRegisterDto)
@@ -48,9 +55,11 @@ public class AppController implements CommandLineRunner {
                     }
                     break;
                 case "LoginUser":
+                    UserLoginDto userLoginDto = new UserLoginDto(input[1], input[2]);
+
                     break;
                 case "Logout":
-                    break;
+                    return;
             }
         }
     }
