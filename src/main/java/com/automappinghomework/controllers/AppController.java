@@ -1,5 +1,6 @@
 package com.automappinghomework.controllers;
 
+import com.automappinghomework.domain.models.GameAddDto;
 import com.automappinghomework.domain.models.UserLoginDto;
 import com.automappinghomework.domain.models.UserRegisterDto;
 import com.automappinghomework.services.UserService;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import java.io.BufferedReader;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class AppController implements CommandLineRunner {
@@ -60,6 +64,12 @@ public class AppController implements CommandLineRunner {
                     break;
                 case "Logout":
                     this.userService.logoutUser();
+                    break;
+                case "AddGame":
+                    GameAddDto gameAddDto = new GameAddDto(
+                            input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
+                            input[4], input[5], input[6],
+                            LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     break;
             }
         }
