@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void loginUser(UserLoginDto userLoginDto) {
-        User user = this.userRepository.findByEmail(userLoginDto.getEmail());
+        User user = this.userRepository.findByEmailAndPassword(userLoginDto.getEmail(), userLoginDto.getPassword());
 
         if (user == null) {
             System.out.println("Incorrect username / password");
@@ -40,6 +40,17 @@ public class UserServiceImpl implements UserService {
         } else {
             this.userDto = this.modelMapper.map(user, UserDto.class);
             System.out.println("Successfully logged in " + this.userDto.getFullName());
+        }
+    }
+
+    @Override
+    public void logoutUser() {
+        if (this.userDto == null) {
+            System.out.println("Cannot log out. No user was logged in.");
+        } else {
+            String name = this.userDto.getFullName();
+            this.userDto = null;
+            System.out.println(String.format("User %s successfully logged out", name));
         }
     }
 }

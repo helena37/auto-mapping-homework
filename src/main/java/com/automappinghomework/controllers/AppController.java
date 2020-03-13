@@ -56,10 +56,11 @@ public class AppController implements CommandLineRunner {
                     break;
                 case "LoginUser":
                     UserLoginDto userLoginDto = new UserLoginDto(input[1], input[2]);
-
+                    this.userService.loginUser(userLoginDto);
                     break;
                 case "Logout":
-                    return;
+                    this.userService.logoutUser();
+                    break;
             }
         }
     }
