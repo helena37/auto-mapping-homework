@@ -3,6 +3,7 @@ package com.automappinghomework.controllers;
 import com.automappinghomework.domain.models.GameAddDto;
 import com.automappinghomework.domain.models.UserLoginDto;
 import com.automappinghomework.domain.models.UserRegisterDto;
+import com.automappinghomework.services.GameService;
 import com.automappinghomework.services.UserService;
 import com.automappinghomework.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,14 @@ public class AppController implements CommandLineRunner {
     private final BufferedReader reader;
     private final ValidationUtil validationUtil;
     private final UserService userService;
+    private final GameService gameService;
 
     @Autowired
-    public AppController(BufferedReader reader, ValidationUtil validationUtil, UserService userService) {
+    public AppController(BufferedReader reader, ValidationUtil validationUtil, UserService userService, GameService gameService) {
         this.reader = reader;
         this.validationUtil = validationUtil;
         this.userService = userService;
+        this.gameService = gameService;
     }
 
     @Override
@@ -70,6 +73,16 @@ public class AppController implements CommandLineRunner {
                             input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
                             input[4], input[5], input[6],
                             LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+                    if (this.validationUtil.isValid(gameAddDto)) {
+                        this.gameService.addGame(gameAddDto);
+                    } else {
+                        this.validationUtil
+                                .getViolations(gameAddDto)
+                                .stream()
+                                .map(ConstraintViolation::getMessage)
+                                .forEach(System.out::println);
+                    }
                     break;
             }
         }

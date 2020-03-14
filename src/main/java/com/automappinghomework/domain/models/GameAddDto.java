@@ -1,5 +1,7 @@
 package com.automappinghomework.domain.models;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -28,8 +30,7 @@ public class GameAddDto {
         this.releaseDate = releaseDate;
     }
 
-    @Size(min = 3, max = 100)
-   // @Pattern()
+    @Pattern(regexp = "^[A-Z].{2,100}", message = "Invalid title!!!")
     public String getTitle() {
         return title;
     }
@@ -38,6 +39,8 @@ public class GameAddDto {
         this.title = title;
     }
 
+    @DecimalMin(value = "0", message = "Price must be a positive number!!!")
+    @Digits(integer = 6, fraction = 2, message = "Invalid price format!!!")
     public BigDecimal getPrice() {
         return price;
     }
@@ -46,6 +49,8 @@ public class GameAddDto {
         this.price = price;
     }
 
+    @DecimalMin(value = "0", message = "Size must be a positive number!!!")
+    @Digits(integer = 5, fraction = 1, message = "Invalid size format!!!")
     public double getSize() {
         return size;
     }
@@ -54,6 +59,7 @@ public class GameAddDto {
         this.size = size;
     }
 
+    @Size(min = 11, max = 11, message = "Trailer is not valid")
     public String getTrailer() {
         return trailer;
     }
@@ -62,6 +68,7 @@ public class GameAddDto {
         this.trailer = trailer;
     }
 
+    @Pattern(regexp = "^http:\\/\\/.+|https:\\/\\/.+", message = "Image not valid")
     public String getImage() {
         return image;
     }
@@ -70,6 +77,7 @@ public class GameAddDto {
         this.image = image;
     }
 
+    @Size(min = 20, message = "Description is not valid")
     public String getDescription() {
         return description;
     }

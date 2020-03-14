@@ -4,4 +4,5 @@ import com.automappinghomework.domain.models.GameAddDto;
 
 public interface GameService {
     void addGame(GameAddDto gameAddDto);
+
 }
