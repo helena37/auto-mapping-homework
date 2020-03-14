@@ -68,20 +68,25 @@ public class AppController implements CommandLineRunner {
                 case "Logout":
                     this.userService.logoutUser();
                     break;
-                case "AddGame":
-                    GameAddDto gameAddDto = new GameAddDto(
-                            input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
-                            input[4], input[5], input[6],
-                            LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                        case "AddGame":
+                            try {
+                            GameAddDto gameAddDto = new GameAddDto(
+                                    input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
+                                    input[4], input[5], input[6],
+                                    LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
-                    if (this.validationUtil.isValid(gameAddDto)) {
-                        this.gameService.addGame(gameAddDto);
-                    } else {
-                        this.validationUtil
-                                .getViolations(gameAddDto)
-                                .stream()
-                                .map(ConstraintViolation::getMessage)
-                                .forEach(System.out::println);
+                            if (this.validationUtil.isValid(gameAddDto)) {
+                                this.gameService.addGame(gameAddDto);
+                                System.out.println("Added " + gameAddDto.getTitle());
+                            } else {
+                                this.validationUtil
+                                        .getViolations(gameAddDto)
+                                        .stream()
+                                        .map(ConstraintViolation::getMessage)
+                                        .forEach(System.out::println);
+                            }
+                    }catch (NullPointerException ex) {
+                        System.out.println("No logged in user!!! PLEASE, log in to make changes!!!");
                     }
                     break;
             }
