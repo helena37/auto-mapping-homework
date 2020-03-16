@@ -1,6 +1,7 @@
 package com.automappinghomework.controllers;
 
 import com.automappinghomework.domain.models.GameAddDto;
+import com.automappinghomework.domain.models.GameEditDto;
 import com.automappinghomework.domain.models.UserLoginDto;
 import com.automappinghomework.domain.models.UserRegisterDto;
 import com.automappinghomework.services.GameService;
@@ -39,7 +40,7 @@ public class AppController implements CommandLineRunner {
 
             switch (input[0]) {
                 case "RegisterUser":
-                    if(!input[2].equals(input[3])) {
+                    if (!input[2].equals(input[3])) {
                         System.out.println("Password don't match!");
                         break;
                     }
@@ -50,9 +51,9 @@ public class AppController implements CommandLineRunner {
                                 .registerUser(userRegisterDto);
                         System.out.println(
                                 String.format(
-                                "%s was registered",
+                                        "%s was registered",
                                         input[4]
-                        ));
+                                ));
                     } else {
                         this.validationUtil
                                 .getViolations(userRegisterDto)
@@ -68,24 +69,61 @@ public class AppController implements CommandLineRunner {
                 case "Logout":
                     this.userService.logoutUser();
                     break;
-                        case "AddGame":
-                            try {
-                            GameAddDto gameAddDto = new GameAddDto(
-                                    input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
-                                    input[4], input[5], input[6],
-                                    LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                case "AddGame":
+                    try {
+                        GameAddDto gameAddDto = new GameAddDto(
+                                input[1], new BigDecimal(input[2]), Double.parseDouble(input[3]),
+                                input[4], input[5], input[6],
+                                LocalDate.parse(input[7], DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
-                            if (this.validationUtil.isValid(gameAddDto)) {
-                                this.gameService.addGame(gameAddDto);
-                                System.out.println("Added " + gameAddDto.getTitle());
-                            } else {
-                                this.validationUtil
-                                        .getViolations(gameAddDto)
-                                        .stream()
-                                        .map(ConstraintViolation::getMessage)
-                                        .forEach(System.out::println);
+                        if (this.validationUtil.isValid(gameAddDto)) {
+                            this.gameService.addGame(gameAddDto);
+                            System.out.println("Added " + gameAddDto.getTitle());
+                        } else {
+                            this.validationUtil
+                                    .getViolations(gameAddDto)
+                                    .stream()
+                                    .map(ConstraintViolation::getMessage)
+                                    .forEach(System.out::println);
+                        }
+                    } catch (NullPointerException ex) {
+                        System.out.println("No logged in user!!! PLEASE, log in to make changes!!!");
+                    }
+                    break;
+                case "EditGame":
+                    try {
+                        GameEditDto gameEditDto = new GameEditDto();
+                        for (int i = 2; i < input.length; i++) {
+                            String[] tokens = input[i].split("=");
+                            switch (tokens[0]) {
+                                case "title":
+                                    gameEditDto.setTitle(tokens[1]);
+                                    break;
+                                case "price":
+                                    gameEditDto.setPrice(new BigDecimal(tokens[1]));
+                                    break;
+                                case "size":
+                                    gameEditDto.setSize(Double.parseDouble(tokens[1]));
+                                    break;
+                                case "thumbnail":
+                                    gameEditDto.setImage(tokens[1]);
+                                    break;
+                                case "trailer":
+                                    gameEditDto.setTrailer(tokens[1]);
+                                    break;
+                                case "description":
+                                    gameEditDto.setDescription(tokens[1]);
+                                    break;
+                                case "date":
+                                    gameEditDto.setReleaseDate(LocalDate.parse(tokens[1],
+                                            DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                                    break;
+                                default:
+                                    System.out.println("Invalid Command");
                             }
-                    }catch (NullPointerException ex) {
+                            this.gameService.editGame(Long.parseLong(input[1]), gameEditDto);
+                        }
+                    } catch (NullPointerException ex) {
                         System.out.println("No logged in user!!! PLEASE, log in to make changes!!!");
                     }
                     break;
