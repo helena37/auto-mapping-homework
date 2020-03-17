@@ -1,7 +1,7 @@
 package com.automappinghomework.services;
 
-import com.automappinghomework.domain.models.UserLoginDto;
-import com.automappinghomework.domain.models.UserRegisterDto;
+import com.automappinghomework.domain.models.dtos.UserLoginDto;
+import com.automappinghomework.domain.models.dtos.UserRegisterDto;
 
 public interface UserService {
     void registerUser(UserRegisterDto userRegisterDto);

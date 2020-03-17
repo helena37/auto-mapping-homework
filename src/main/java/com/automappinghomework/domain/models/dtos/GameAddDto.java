@@ -1,6 +1,4 @@
-package com.automappinghomework.domain.models;
-
-import org.springframework.lang.Nullable;
+package com.automappinghomework.domain.models.dtos;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -9,8 +7,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class GameEditDto {
-    private long id;
+public class GameAddDto {
     private String title;
     private BigDecimal price;
     private double size;
@@ -19,12 +16,11 @@ public class GameEditDto {
     private String description;
     private LocalDate releaseDate;
 
-    public GameEditDto() {
+    public GameAddDto() {
     }
 
-    public GameEditDto(long id, String title, BigDecimal price, double size,
-                       String trailer, String image, String description, LocalDate releaseDate) {
-        this.id = id;
+    public GameAddDto(String title, BigDecimal price, double size, String trailer,
+                      String image, String description, LocalDate releaseDate) {
         this.title = title;
         this.price = price;
         this.size = size;
@@ -32,14 +28,6 @@ public class GameEditDto {
         this.image = image;
         this.description = description;
         this.releaseDate = releaseDate;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Pattern(regexp = "^[A-Z].{2,100}", message = "Invalid title!!!")

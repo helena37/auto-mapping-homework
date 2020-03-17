@@ -1,10 +1,7 @@
 package com.automappinghomework.controllers;
 
-import com.automappinghomework.domain.entities.Game;
-import com.automappinghomework.domain.models.GameAddDto;
-import com.automappinghomework.domain.models.GameEditDto;
-import com.automappinghomework.domain.models.UserLoginDto;
-import com.automappinghomework.domain.models.UserRegisterDto;
+import com.automappinghomework.domain.models.dtos.*;
+import com.automappinghomework.domain.models.views.GameSingleTitleDetailsViewDto;
 import com.automappinghomework.services.GameService;
 import com.automappinghomework.services.UserService;
 import com.automappinghomework.utils.ValidationUtil;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import java.io.BufferedReader;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -134,9 +130,6 @@ public class AppController implements CommandLineRunner {
                                     gameEditDto.setReleaseDate(LocalDate.parse(tokens[1],
                                             DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                                     break;
-                                default:
-                                    System.out.println("Game with given id doesn't exist!!!");
-                                    break;
                             }
 
                             if(this.validationUtil.isValid(gameEditDto)) {
@@ -152,6 +145,33 @@ public class AppController implements CommandLineRunner {
                     } catch (NullPointerException ex) {
                         System.out.println("No logged in user!!! PLEASE, log in to make changes!!!");
                     }
+                    break;
+                case "DeleteGame":
+                    GameDeleteDto gameDeleteDto = this.gameService.findById(Long.parseLong(input[1]));
+                    this.gameService.deleteGame(gameDeleteDto);
+                    break;
+                case "AllGames":
+                    this.gameService
+                            .getAllGameTitlesAndPrices()
+                            .forEach(game -> System.out.println(game.getTitle() + " " + game.getPrice()));
+                    break;
+                case "DetailGame":
+                    GameSingleTitleDetailsViewDto gameSingleTitleDetails =
+                            this.gameService.getSingleTitleDetails(input[1]);
+
+                    String date = gameSingleTitleDetails.getReleaseDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    System.out.println(
+                            String.format(
+                                    "Title: %s\r\n" +
+                                            "Price: %.2f\r\n" +
+                                            "Description: %s\r\n" +
+                                            "Release date: %s\r\n",
+                                    gameSingleTitleDetails.getTitle(),
+                                    gameSingleTitleDetails.getPrice(),
+                                    gameSingleTitleDetails.getDescription(),
+                                    date
+                            )
+                    );
                     break;
             }
         }

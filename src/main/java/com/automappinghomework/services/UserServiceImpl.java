@@ -2,9 +2,9 @@ package com.automappinghomework.services;
 
 import com.automappinghomework.domain.entities.Role;
 import com.automappinghomework.domain.entities.User;
-import com.automappinghomework.domain.models.UserDto;
-import com.automappinghomework.domain.models.UserLoginDto;
-import com.automappinghomework.domain.models.UserRegisterDto;
+import com.automappinghomework.domain.models.dtos.UserDto;
+import com.automappinghomework.domain.models.dtos.UserLoginDto;
+import com.automappinghomework.domain.models.dtos.UserRegisterDto;
 import com.automappinghomework.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

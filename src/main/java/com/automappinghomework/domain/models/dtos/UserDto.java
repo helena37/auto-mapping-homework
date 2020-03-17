@@ -1,4 +1,4 @@
-package com.automappinghomework.domain.models;
+package com.automappinghomework.domain.models.dtos;
 
 import com.automappinghomework.domain.entities.Role;
 
