@@ -6,5 +6,7 @@ import com.automappinghomework.domain.models.GameEditDto;
 
 public interface GameService {
     void addGame(GameAddDto gameAddDto);
-    void editGame(long id, GameEditDto gameEditDto);
+    void editGame(GameEditDto gameEditDto);
+    GameEditDto getOneById(long id);
+    void deleteGame(long id);
 }

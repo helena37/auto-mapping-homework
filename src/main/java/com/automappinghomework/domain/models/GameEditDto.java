@@ -1,5 +1,7 @@
 package com.automappinghomework.domain.models;
 
+import org.springframework.lang.Nullable;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;

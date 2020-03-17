@@ -1,5 +1,6 @@
 package com.automappinghomework.controllers;
 
+import com.automappinghomework.domain.entities.Game;
 import com.automappinghomework.domain.models.GameAddDto;
 import com.automappinghomework.domain.models.GameEditDto;
 import com.automappinghomework.domain.models.UserLoginDto;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import java.io.BufferedReader;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -92,7 +94,9 @@ public class AppController implements CommandLineRunner {
                     break;
                 case "EditGame":
                     try {
-                        GameEditDto gameEditDto = new GameEditDto();
+                        GameEditDto gameEditDto = this.gameService.getOneById(Long.parseLong(input[1]));
+                        gameEditDto.setId(Long.parseLong(input[1]));
+
                         for (int i = 2; i < input.length; i++) {
                             String[] tokens = input[i].split("=");
                             switch (tokens[0]) {
@@ -119,9 +123,19 @@ public class AppController implements CommandLineRunner {
                                             DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                                     break;
                                 default:
-                                    System.out.println("Invalid Command");
+                                    System.out.println("Game with given id doesn't exist!!!");
+                                    break;
                             }
-                            this.gameService.editGame(Long.parseLong(input[1]), gameEditDto);
+
+                            if(this.validationUtil.isValid(gameEditDto)) {
+                                this.gameService.editGame(gameEditDto);
+                            } else {
+                                this.validationUtil
+                                        .getViolations(gameEditDto)
+                                        .stream()
+                                        .map(ConstraintViolation::getMessage)
+                                        .forEach(System.out::println);
+                            }
                         }
                     } catch (NullPointerException ex) {
                         System.out.println("No logged in user!!! PLEASE, log in to make changes!!!");

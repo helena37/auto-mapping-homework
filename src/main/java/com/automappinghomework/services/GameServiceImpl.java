@@ -3,7 +3,6 @@ package com.automappinghomework.services;
 import com.automappinghomework.domain.entities.Game;
 import com.automappinghomework.domain.models.GameAddDto;
 import com.automappinghomework.domain.models.GameEditDto;
-import com.automappinghomework.domain.models.UserDto;
 import com.automappinghomework.repositories.GameRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private GameAddDto gameAddDto;
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository, UserService userService, ModelMapper modelMapper) {
@@ -34,21 +32,23 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void editGame(long id, GameEditDto gameEditDto) {
+    public void editGame(GameEditDto gameEditDto) {
         if (!this.userService.isLoggedUserAdmin()) {
             System.out.println("Logged user is not ADMIN and can't edit games!!!");
             return;
         }
+            Game game = this.modelMapper.map(gameEditDto, Game.class);
+            this.gameRepository.saveAndFlush(game);
+            System.out.println("Edited " + gameEditDto.getTitle());
+    }
 
-        Game game = this.gameRepository.findById(id);
-        if (game == null) {
-            System.out.println("Game with given id doesn't exist!!!");
+    @Override
+    public GameEditDto getOneById(long id) {
+        return this.gameRepository.findById(id);
+    }
 
-        } else {
-            game = modelMapper.map(gameEditDto, Game.class);
-            game.setId(id);
-            this.gameRepository.save(game);
-            System.out.println("Edited " + game.getTitle());
-        }
+    @Override
+    public void deleteGame(long id) {
+       
     }
 }

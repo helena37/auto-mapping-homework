@@ -18,7 +18,7 @@ public class Game extends BaseEntity {
     public Game() {
     }
 
-    @Column
+    @Column(nullable = false)
     public String getTitle() {
         return title;
     }
@@ -45,7 +45,7 @@ public class Game extends BaseEntity {
         this.image = image;
     }
 
-    @Column(scale = 19, precision = 1)
+    @Column
     public double getSize() {
         return size;
     }
@@ -54,7 +54,7 @@ public class Game extends BaseEntity {
         this.size = size;
     }
 
-    @Column(scale = 19, precision = 2)
+    @Column
     public BigDecimal getPrice() {
         return price;
     }
