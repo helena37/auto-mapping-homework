@@ -22,6 +22,18 @@ public class GameEditDto {
     public GameEditDto() {
     }
 
+    public GameEditDto(long id, String title, BigDecimal price, double size,
+                       String trailer, String image, String description, LocalDate releaseDate) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.size = size;
+        this.trailer = trailer;
+        this.image = image;
+        this.description = description;
+        this.releaseDate = releaseDate;
+    }
+
     public long getId() {
         return id;
     }

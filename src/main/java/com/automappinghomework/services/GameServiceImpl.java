@@ -8,11 +8,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private GameEditDto gameEditDto;
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository, UserService userService, ModelMapper modelMapper) {
@@ -37,18 +40,20 @@ public class GameServiceImpl implements GameService {
             System.out.println("Logged user is not ADMIN and can't edit games!!!");
             return;
         }
-            Game game = this.modelMapper.map(gameEditDto, Game.class);
-            this.gameRepository.saveAndFlush(game);
-            System.out.println("Edited " + gameEditDto.getTitle());
+
+        Game game = this.modelMapper.map(gameEditDto, Game.class);
+        this.gameRepository.saveAndFlush(game);
+        System.out.println("Edited " + game.getTitle());
     }
 
     @Override
-    public GameEditDto getOneById(long id) {
-        return this.gameRepository.findById(id);
+    public GameEditDto findOneById(long id) {
+        Optional<Game> game = this.gameRepository.findById(id);
+        return game.map(g -> this.modelMapper.map(g, GameEditDto.class)).orElse(null);
     }
 
     @Override
     public void deleteGame(long id) {
-       
+
     }
 }

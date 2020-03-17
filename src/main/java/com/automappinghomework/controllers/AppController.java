@@ -94,7 +94,7 @@ public class AppController implements CommandLineRunner {
                     break;
                 case "EditGame":
                     try {
-                        GameEditDto gameEditDto = this.gameService.getOneById(Long.parseLong(input[1]));
+                        GameEditDto gameEditDto = this.gameService.findOneById(Long.parseLong(input[1]));
                         gameEditDto.setId(Long.parseLong(input[1]));
 
                         for (int i = 2; i < input.length; i++) {
