@@ -37,8 +37,14 @@ public class AppController implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         while (true) {
+            System.out.println("!!!If You want to exit the program ENTER --> END <--");
             System.out.println("Please, enter command: ");
+
             String[] input = this.reader.readLine().split("\\|");
+
+            if(input[0].equalsIgnoreCase("END")) {
+                return;
+            }
 
             switch (input[0]) {
                 case "RegisterUser":
@@ -95,6 +101,12 @@ public class AppController implements CommandLineRunner {
                 case "EditGame":
                     try {
                         GameEditDto gameEditDto = this.gameService.findOneById(Long.parseLong(input[1]));
+
+                        if (gameEditDto == null) {
+                            System.out.printf("Game with Id %s doesn't exist!!!\r\n", input[1]);
+                            return;
+                        }
+
                         gameEditDto.setId(Long.parseLong(input[1]));
 
                         for (int i = 2; i < input.length; i++) {
